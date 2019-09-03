@@ -19,9 +19,9 @@ div#gesture-trial-container {
 
 div.gm-container {
   width: 100%;
-  height: 400px;
+  height: 100%;
   max-width: 100%;
-  max-height: 50%;
+  max-height: 100%;
 }
 </style>
 
@@ -41,14 +41,26 @@ var instructions = {
 
 var gm = {
     type: 'gmlhlgm',
-    condition: 'dynamic',
+    condition: 'draw',
     expression: '8+2+4=_+4'
+};
+
+var gm2 = {
+    type: 'gmlhlgm',
+    condition: 'dynamic',
+    expression: '8+3+4=_+4',
+    nextButton: false
 };
 
 jsPsych.init({
     timeline: [
         // instructions,
-        gm
-    ]
+        gm,
+        gm2
+    ],
+    // A thin, colored div was at the top of the display element, which I believe should have
+    // been removed automatically by jsPsych when all loading has occurred. Turning off the
+    // progress bar to prevent this issue.
+    show_preload_progress_bar: false
 });
 </script>

@@ -93,6 +93,11 @@ jsPsych.plugins["gmlhlgm"] = (function() {
       condition: {
         type: jsPsych.plugins.parameterType.STRING,
         default: 'static'
+      },
+      // Permit advancing to the next screen at any time.
+      nextButton: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        default: true
       }
     }
   }
@@ -100,14 +105,19 @@ jsPsych.plugins["gmlhlgm"] = (function() {
   plugin.trial = function(display_element, trial) {
     const trial_data = {};
 
+    // d3.select('#jspsych-content').style('margin', 0);
+
     const d3_display_element = d3.select(display_element);
 
     const container = d3_display_element.append('div')
-      .attr('id', 'gesture-trial-container');
+      .attr('id', 'gesture-trial-container')
+      .style({
+        'height': '80vh',
+        'width': '95vw',
+        'margin': 'auto'
+      });
 
-    const div = container.append('div');
-
-    const gm_container = div.append('div')
+    const gm_container = container.append('div')
       .classed('gm-container', true)
       .style('position', 'relative');
 
@@ -116,7 +126,7 @@ jsPsych.plugins["gmlhlgm"] = (function() {
     // FIXME: For some reason the svg within the canvas (deprecated, for the most part) has an altered position within the canvases on this page.
     // This is producing a horizontal scroll bar.  Removing SVGs here to prevent that.
     // div.select('.gm-canvas').selectAll('svg').remove();
-    div.select('.gm-canvas').append('div')
+    container.select('.gm-canvas').append('div')
       .style({ 
         'position': 'absolute',
         'width': '100%',
@@ -156,6 +166,8 @@ jsPsych.plugins["gmlhlgm"] = (function() {
         // console.log('3', trial_data);
         // end trial
         setTimeout(function() {
+            // d3.select('#jspsych-content').style('margin', 'auto');
+            display_element.innerHTML = '';
             jsPsych.finishTrial(trial_data);
         }, 3000);
       }
@@ -165,6 +177,27 @@ jsPsych.plugins["gmlhlgm"] = (function() {
     });
 
     d3.selectAll('.remove_me').remove();
+
+    if (trial.condition == 'draw') {
+      container.append('button')
+        .attr('id', 'jspsych-instructions-next')
+        .classed('jspsych-btn', true)
+        .style('margin-right', '4em')
+        .text('Clear')
+        .on('click', function() { 
+          canvas.model.paths().forEach(function(path) {
+            canvas.model.removePath(path);
+          });  
+        });
+    }
+
+    if (trial.nextButton) {
+      container.append('button')
+        .attr('id', 'jspsych-instructions-next')
+        .classed('jspsych-btn', true)
+        .text('Next >')
+        .on('click', function() { display_element.innerHTML = ''; jsPsych.finishTrial(trial_data) });
+    }
   };
 
   return plugin;
