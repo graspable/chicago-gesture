@@ -117,6 +117,15 @@ jsPsych.plugins["gmlhlgm"] = (function() {
         'margin': 'auto'
       });
 
+    container.append('div')
+      .attr('id', 'gesture-condition-label')
+      .style({
+        'position': 'absolute',
+        'top': '10px',
+        'width': '95%', // The element was offset to the right, but I don't know why. Reducing width to compensate (centers the text).
+        'text-align': 'center'
+      }).text(trial.condition.charAt(0).toUpperCase() + trial.condition.slice(1) + ' Condition');
+
     const gm_container = container.append('div')
       .classed('gm-container', true)
       .style('position', 'relative');
