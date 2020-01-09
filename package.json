@@ -11,7 +11,7 @@
     "webpack-dev-server": "^3.8.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --config webpack.wds.js --host 192.168.1.182",
+    "start": "webpack-dev-server --config webpack.wds.js --host 192.168.1.131",
     "start:local": "webpack-dev-server --config webpack.wds.js"
   }
 }

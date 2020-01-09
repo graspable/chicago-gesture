@@ -9,7 +9,7 @@ module.exports = {
     mode: "development",
     devServer: {
         open: true,
-        openPage: "experiment.html",
+        openPage: "index.html",
 
         // having either this or the publicPath in the output config seems to do the same thing
         publicPath: ".",

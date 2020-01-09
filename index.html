@@ -47,16 +47,23 @@ var gm = {
 
 var gm2 = {
     type: 'gmlhlgm',
-    condition: 'dynamic',
+    condition: 'dynamic-free',
     expression: '8+3+4=_+4',
-    nextButton: false
 };
+
+var gm3 = {
+    type: 'gmlhlgm',
+    condition: 'dynamic-squish',
+    expression: '8+4+4=_+4',
+    nextButton: false
+}
 
 jsPsych.init({
     timeline: [
         // instructions,
         gm,
-        gm2
+        gm2,
+        gm3
     ],
     // A thin, colored div was at the top of the display element, which I believe should have
     // been removed automatically by jsPsych when all loading has occurred. Turning off the

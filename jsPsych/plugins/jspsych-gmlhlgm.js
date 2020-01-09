@@ -89,7 +89,7 @@ jsPsych.plugins["gmlhlgm"] = (function() {
         type: jsPsych.plugins.parameterType.STRING, // BOOL, STRING, INT, FLOAT, FUNCTION, KEYCODE, SELECT, HTML_STRING, IMAGE, AUDIO, VIDEO, OBJECT, COMPLEX
         default: undefined
       },
-      // Values: 'static', 'draw', 'dynamic'.
+      // Values: 'static', 'draw', 'dynamic-free', 'dynamic-squish'.
       condition: {
         type: jsPsych.plugins.parameterType.STRING,
         default: 'static'
@@ -120,6 +120,13 @@ jsPsych.plugins["gmlhlgm"] = (function() {
     const gm_container = container.append('div')
       .classed('gm-container', true)
       .style('position', 'relative');
+
+    if (trial.condition == 'dynamic-free') {
+      gmath.MathSettings.doc.set('gmlhlgm_require_squish', false);
+    }
+    if (trial.condition == 'dynamic-squish') {
+      gmath.MathSettings.doc.set('gmlhlgm_require_squish', true);
+    }
 
     const canvas = new gmath.Canvas(gm_container.node(), canvas_opts);
     window.canvas = canvas;
