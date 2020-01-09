@@ -45,7 +45,29 @@ const derivation_opts = {
   padding: { left: 5, right: 5, top: 5, bottom: 5 },
   v_align: 'center',
   h_align: 'equals',
-  action_blacklist: [],
+  action_blacklist: [
+		'AddSubNumbersAction',
+		'AddSubIdAction',
+		// Holding the `=` to apply an operation to both sides of an equation.
+		'EquationRewriteAction',
+		// The drag actions for moving things across `=`.
+		'AddSubInvertAction',
+		'IndexInvertAction',
+		'MulDivInvertAction',
+		'EqInvertAndCommuteTermAction',
+		// distribution
+		// 'DistributeIntoBracketsAction', <= always allow distribution via dragging
+		'DistributePolynomialsAction',
+		// factoring
+		'FactorOutOfBracketsAction',
+		'FactorCommonTermsAction',
+		'GreatestCommonFactorAction',
+		// Only allow rewriting with the keypad tool.
+		'ExpressionRewriteAction:shake',
+		// Always disallow the fraction extension action (e.g. `1/2` => `{1x}/{2x}`)
+		'FractionRewriteAction'
+  ],
+  shake_terms_on_mistake: false,
   dont_init_eq: false,
   pos: { x: 'center', y: 'center' },
   debug_lines: false,
