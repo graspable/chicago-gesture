@@ -65,7 +65,7 @@ const derivation_opts = {
   row_transition_dur: 0,
   resizable: { x: false, y: false },
   svg_no_overflow: false,
-  show_area_hints: true,
+  show_area_hints: false,
   show_dest_hints: false,
   show_action_names: false,
   auto_trigger_actions: true,
