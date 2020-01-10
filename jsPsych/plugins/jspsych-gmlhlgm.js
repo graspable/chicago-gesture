@@ -2,6 +2,8 @@
  *
  */
 
+let FONTS_LOADED = false;
+
 const canvas_opts = {
   width: '100%',
   height: '100%',
@@ -242,20 +244,13 @@ jsPsych.plugins["gmlhlgm"] = (function() {
 })();
 
 function setupFontSizeInterval(derivation) {
-  var wait = 0;
   var view = derivation.getLastView();
-  var loadCount = 0;
-  var gmFontInterval = setInterval(function checkFontSize() {
-    wait += 100;
-    if (view.wrongFontSize() && wait <= 5000) {
+  if (!FONTS_LOADED) {
+    setTimeout(function refreshDerivation() {
       view.loadSizes();
-      loadCount++;
-    }
-    else {
       derivation.render();
       derivation.initPosition();
-      clearInterval(gmFontInterval);
-      console.log('attempted load', loadCount, 'times, total wait', wait, 'ms');
-    }
-  }, 100);
+      FONTS_LOADED = true;
+    }, 5000);
+  }
 }
