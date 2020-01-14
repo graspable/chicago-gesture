@@ -2,6 +2,8 @@
  *
  */
 
+let FONTS_LOADED = false;
+
 const canvas_opts = {
   width: '100%',
   height: '100%',
@@ -45,7 +47,29 @@ const derivation_opts = {
   padding: { left: 5, right: 5, top: 5, bottom: 5 },
   v_align: 'center',
   h_align: 'equals',
-  action_blacklist: [],
+  action_blacklist: [
+		'AddSubNumbersAction',
+		'AddSubIdAction',
+		// Holding the `=` to apply an operation to both sides of an equation.
+		'EquationRewriteAction',
+		// The drag actions for moving things across `=`.
+		'AddSubInvertAction',
+		'IndexInvertAction',
+		'MulDivInvertAction',
+		'EqInvertAndCommuteTermAction',
+		// distribution
+		// 'DistributeIntoBracketsAction', <= always allow distribution via dragging
+		'DistributePolynomialsAction',
+		// factoring
+		'FactorOutOfBracketsAction',
+		'FactorCommonTermsAction',
+		'GreatestCommonFactorAction',
+		// Only allow rewriting with the keypad tool.
+		'ExpressionRewriteAction:shake',
+		// Always disallow the fraction extension action (e.g. `1/2` => `{1x}/{2x}`)
+		'FractionRewriteAction'
+  ],
+  shake_terms_on_mistake: false,
   dont_init_eq: false,
   pos: { x: 'center', y: 'center' },
   debug_lines: false,
@@ -65,7 +89,7 @@ const derivation_opts = {
   row_transition_dur: 0,
   resizable: { x: false, y: false },
   svg_no_overflow: false,
-  show_area_hints: true,
+  show_area_hints: false,
   show_dest_hints: false,
   show_action_names: false,
   auto_trigger_actions: true,
@@ -116,6 +140,15 @@ jsPsych.plugins["gmlhlgm"] = (function() {
         'width': '95vw',
         'margin': 'auto'
       });
+
+    container.append('div')
+      .attr('id', 'gesture-condition-label')
+      .style({
+        'position': 'absolute',
+        'top': '10px',
+        'width': '95%', // The element was offset to the right, but I don't know why. Reducing width to compensate (centers the text).
+        'text-align': 'center'
+      }).text(trial.condition.charAt(0).toUpperCase() + trial.condition.slice(1) + ' Condition');
 
     const gm_container = container.append('div')
       .classed('gm-container', true)
@@ -211,20 +244,13 @@ jsPsych.plugins["gmlhlgm"] = (function() {
 })();
 
 function setupFontSizeInterval(derivation) {
-  var wait = 0;
   var view = derivation.getLastView();
-  var loadCount = 0;
-  var gmFontInterval = setInterval(function checkFontSize() {
-    wait += 100;
-    if (view.wrongFontSize() && wait <= 5000) {
+  if (!FONTS_LOADED) {
+    setTimeout(function refreshDerivation() {
       view.loadSizes();
-      loadCount++;
-    }
-    else {
       derivation.render();
       derivation.initPosition();
-      clearInterval(gmFontInterval);
-      console.log('attempted load', loadCount, 'times, total wait', wait, 'ms');
-    }
-  }, 100);
+      FONTS_LOADED = true;
+    }, 5000);
+  }
 }
