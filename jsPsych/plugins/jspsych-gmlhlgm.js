@@ -152,7 +152,8 @@ jsPsych.plugins["gmlhlgm"] = (function() {
 
     const gm_container = container.append('div')
       .classed('gm-container', true)
-      .style('position', 'relative');
+      .style('position', 'relative')
+      .style('height', '100%');
 
     if (trial.condition == 'dynamic-free') {
       gmath.MathSettings.doc.set('gmlhlgm_require_squish', false);
