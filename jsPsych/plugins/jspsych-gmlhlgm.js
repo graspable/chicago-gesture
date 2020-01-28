@@ -113,7 +113,7 @@ jsPsych.plugins["gmlhlgm"] = (function() {
         type: jsPsych.plugins.parameterType.STRING, // BOOL, STRING, INT, FLOAT, FUNCTION, KEYCODE, SELECT, HTML_STRING, IMAGE, AUDIO, VIDEO, OBJECT, COMPLEX
         default: undefined
       },
-      // Values: 'static', 'draw', 'dynamic-free', 'dynamic-squish'.
+      // Values: 'static', 'draw', 'action', 'squish'.
       condition: {
         type: jsPsych.plugins.parameterType.STRING,
         default: 'static'
@@ -155,10 +155,10 @@ jsPsych.plugins["gmlhlgm"] = (function() {
       .style('position', 'relative')
       .style('height', '100%');
 
-    if (trial.condition == 'dynamic-free') {
+    if (trial.condition == 'action') {
       gmath.MathSettings.doc.set('gmlhlgm_require_squish', false);
     }
-    if (trial.condition == 'dynamic-squish') {
+    if (trial.condition == 'squish') {
       gmath.MathSettings.doc.set('gmlhlgm_require_squish', true);
     }
 
